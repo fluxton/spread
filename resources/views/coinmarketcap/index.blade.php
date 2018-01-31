@@ -12,24 +12,27 @@
                         <tr>
                             <th> rank </th>
                             <th> name </th>
-                            <th> % 1h </th>
-                            <th> % 24h </th>
-                            <th> % 7d </th>
-                            <th> usd </th>
-                            <th> btc</th>
-
+                            <th class="text-right"> usd </th>
+                            <th class="text-right"> btc</th>
+                            <th class="text-right"> market cap </th>
+                            <th class="text-right"> volume(24h) </th>
+                            <th class="text-right"> % 1h </th>
+                            <th class="text-right"> % 24h </th>
+                            <th class="text-right"> % 7d </th>
                         </tr>
                     </thead>
                     <tbody>
                        @foreach($coins as $coin)
                        <tr>
-                          <th scope="row"> {{ $coin->rank }} </td>
-                              <td> {{ $coin->name }} </td>
-                              <td style="color:{{ $coin->percent_change_1h < 0 ? " red" : " green"  }} ;"> {{ $coin->percent_change_1h }} </td>
-                              <td style="color:{{ $coin->percent_change_24h < 0 ? " red" : " green"  }} ;"> {{ $coin->percent_change_24h }} </td>
-                              <td style="color:{{ $coin->percent_change_7d < 0 ? " red" : " green"  }} ;"> {{ $coin->percent_change_7d }} </td>
-                              <td> {{ $coin->price_usd }} </td>
-                              <td> {{ $coin->price_btc }} </td>
+                          <th scope="row"> {{ $coin['rank'] }} </td>
+                              <td> {{ $coin['name'] }} </td>
+                              <td class="text-right"> {{ $coin['price_usd'] }} </td>
+                              <td class="text-right"> {{ $coin['price_btc'] }} </td>
+                              <td class="text-right"> {{ intval($coin['market_cap_usd']) }} </td>
+                              <td class="text-right"> {{ intval($coin['24h_volume_usd']) }} </td>
+                              <td class="text-right" style="color:{{ $coin['percent_change_1h'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_1h'] }} </td>
+                              <td class="text-right" style="color:{{ $coin['percent_change_24h'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_24h'] }} </td>
+                              <td class="text-right" style="color:{{ $coin['percent_change_7d'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_7d'] }} </td>
                           </tr>
                           @endforeach
                       </tbody>

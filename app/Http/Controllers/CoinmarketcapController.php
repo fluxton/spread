@@ -36,9 +36,18 @@ class CoinmarketcapController extends Controller
     	// Create a client with a base URI
     	$client = new Client(['base_uri' => 'https://api.coinmarketcap.com/v1/ticker/']);  //https://api.coinmarketcap.com/v1/ticker/?limit=10
 		// Send a request to https://api.coinmarketcap.com/v1/ticker/bitcoin
-    	$response = $client->request('GET', '?limit=50');
+    	$response = $client->request('GET', '?limit=30');
 
-    	$contents = json_decode($response->getBody(true)->getContents());
+
+    	$contents = json_decode($response->getBody(true)->getContents(),true);
+
+        // function remove number( $name ) {
+        //     return "Hello " . ucfirst( $name ) . "!";
+        // }
+
+        // $coins = ( array_map( function( $coin ) {
+        //     return "Hello " . ucfirst( $name ) . "!";
+        // }, $names ) );
 
     	//$contents = $response->getBody()->getContents();
 
@@ -47,8 +56,8 @@ class CoinmarketcapController extends Controller
     	//return $response;
 
 
-    	return view('coinmarketcap.index',[
-    		'coins' => $contents
-    	]);
-    }
+      return view('coinmarketcap.index',[
+          'coins' => $contents
+      ]);
+  }
 }
