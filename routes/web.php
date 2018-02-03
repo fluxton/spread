@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Auth::routes();
@@ -20,3 +20,15 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/coinmarketcap', 'CoinmarketcapController@index')->name('coinmarketcap');
+
+
+Route::get('/binance', 'BinanceController@index')->name('binance');
+
+Route::get('/bithumb', 'BithumbController@index')->name('bithumb');
+
+Route::get('/bittrex', 'BittrexController@index')->name('bittrex');
+
+Route::get('/bitfinex', 'BitfinexController@index')->name('bitfinex');
+
+Route::get('/ethereum', 'EthController@index')->name('ethereum');
+

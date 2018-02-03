@@ -37,6 +37,11 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         <li><a href="{{ route('coinmarketcap') }}">Coinmarketcap</a></li>
+                        <li><a href="{{ route('binance') }}">Binance</a></li>
+                        <li><a href="{{ route('bitfinex') }}">Bitfinex</a></li>
+                        <li><a href="{{ route('bittrex') }}">Bittrex</a></li>
+                        <li><a href="{{ route('bithumb') }}">Bithumb</a></li>
+                        <li><a href="{{ route('ethereum') }}">Ethereum</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
