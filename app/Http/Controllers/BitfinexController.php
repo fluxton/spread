@@ -17,10 +17,10 @@ class BitfinexController extends Controller
 	 */
 	public function __construct()
 	{
-		$this->middleware('auth');
+		//$this->middleware('auth');
 		// Create a client with a base URI
 
-		$this->api_client = new Client(['base_uri' => 'https://api.bitfinex.com/v2/tickers']);
+		$this->api_client = new Client(['base_uri' => 'https://api.bitfinex.com/v2/tickers']); //https://api.bitfinex.com/v2/tickers?symbols=tBTCUSD
 
 		$temp_client = new Client(['base_uri' => 'https://api.bitfinex.com/v1/']);
 		$response = $temp_client->request('GET', 'symbols');

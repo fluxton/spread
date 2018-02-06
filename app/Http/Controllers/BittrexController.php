@@ -16,7 +16,7 @@ class BittrexController extends Controller
 	 */
 	public function __construct()
 	{
-		$this->middleware('auth');
+		//$this->middleware('auth');
 		// Create a client with a base URI
 		$this->api_client = new Client(['base_uri' => 'https://bittrex.com/api/v1.1/public/']);  //https://bittrex.com/api/v1.1/public/getmarketsummaries
 	}

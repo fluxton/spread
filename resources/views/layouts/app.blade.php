@@ -29,7 +29,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Spread Tool') }}
+                        Home
                     </a>
                 </div>
 
@@ -41,10 +41,17 @@
                         <li><a href="{{ route('bitfinex') }}">Bitfinex</a></li>
                         <li><a href="{{ route('bittrex') }}">Bittrex</a></li>
                         <li><a href="{{ route('bithumb') }}">Bithumb</a></li>
-                        <li><a href="{{ route('ethereum') }}">Ethereum</a></li>
+                        <li><a href="{{ route('spread-bithumb') }}">Spread-Bithumb</a></li>
+                        <li><a href="{{ route('spread-binance') }}">Spread-Binance</a></li>
+                        <li><a href="{{ route('spread-bittrex') }}">Spread-Bittrex</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
+                    <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://github.com/fluxton/spread">GitHub/Spread</a></li>
+                    </ul>
+
+                    {{-- <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @guest
@@ -72,7 +79,7 @@
                                 </ul>
                             </li>
                         @endguest
-                    </ul>
+                    </ul> --}}
                 </div>
             </div>
         </nav>

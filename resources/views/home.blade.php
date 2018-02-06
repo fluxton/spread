@@ -66,7 +66,7 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
+            {{-- @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
                         <a href="https://github.com/fluxton/spread">GitHub/Spread</a>
@@ -76,7 +76,7 @@
                         <a href="{{ route('register') }}">Register</a>
                     @endauth
                 </div>
-            @endif
+            @endif --}}
 
             <div class="content">
                 <div class="title m-b-md">
@@ -89,7 +89,12 @@
                     <a href="{{ route('bitfinex') }}">Bitfinex</a>
                     <a href="{{ route('bittrex') }}">Bittrex</a>
                     <a href="{{ route('bithumb') }}">Bithumb</a>
-                    <a href="{{ route('ethereum') }}">Ethereum</a>
+                </div>
+                <br><br>
+                <div class="links">
+                    <a href="{{ route('spread-bithumb') }}">Spread-Bithumb</a>
+                    <a href="{{ route('spread-binance') }}">Spread-Binance</a>
+                    <a href="{{ route('spread-bittrex') }}">Spread-Bittrex</a>
                 </div>
             </div>
         </div>

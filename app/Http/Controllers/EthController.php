@@ -21,7 +21,7 @@ class EthController extends Controller
 	 */
 	public function __construct()
 	{
-		$this->middleware('auth');
+		//$this->middleware('auth');
 		$this->coin_symbol = 'eth';
 		// Create a client with a base URI
 		$this->bittrex_client = new Client(['base_uri' => 'https://bittrex.com/api/v1.1/public/']); //https://bittrex.com/api/v1.1/public/

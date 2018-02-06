@@ -16,7 +16,7 @@ class BithumbController extends Controller
 	 */
 	public function __construct()
 	{
-		$this->middleware('auth');
+		//$this->middleware('auth');
 
 	}
 
@@ -51,10 +51,7 @@ class BithumbController extends Controller
 		}
 		
 		
-// dd($coins);
-// 		usort($coins, function($a, $b) {
-// 			return $b['volume_1day'] - $a['volume_1day'];
-// 		});
+
 
 
 		return view('bithumb.index',[

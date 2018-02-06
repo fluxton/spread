@@ -3,36 +3,81 @@
 	{
 		"selected_items":
 		[
+			[
+				"con",
+				"contents"
+			],
+			[
+				"fruit",
+				"fruit_name"
+			],
+			[
+				"usd",
+				"usdt_coins"
+			],
+			[
+				"for",
+				"foreach\tforeach …"
+			],
+			[
+				"getB",
+				"getBittrexInfo"
+			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "routes/web.php",
+			"file": "app/Http/Controllers/SpreadController.php",
 			"settings":
 			{
-				"buffer_size": 757,
+				"buffer_size": 12446,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "<?php\n\nnamespace App\\Http\\Controllers;\n\nuse Illuminate\\Http\\Request;\nuse GuzzleHttp\\Client;\nuse GuzzleHttp\\Response;\n\nclass BittrexController extends Controller\n{\n\t/**\n\t * Create a new controller instance.\n\t *\n\t * @return void\n\t */\n\tpublic function __construct()\n\t{\n\t\t$this->middleware('auth');\n\t}\n\n\t/**\n\t * Show the application dashboard.\n\t *\n\t * @return \\Illuminate\\Http\\Response\n\t */\n\tpublic function index()\n\t{\n\t\t// Create a client with a base URI\n\t\t$client = new Client(['base_uri' => 'https://bittrex.com/api/v1.1/public/']);  https://bittrex.com/api/v1.1/public/getmarketsummaries\n\t\t// Send a request to https://bittrex.com/api/v1.1/public/getmarketsummaries\n\t\t$response = $client->request('GET', 'getmarketsummaries');\n\n\t\t$contents = json_decode($response->getBody(true)->getContents(),true);\n\n\t\t$filterBy = 'USDT'; // ends with\n\n\t\t$usdt_coins = array_filter($contents, function ($var) use ($filterBy) {\n\t\t\t$string = $var['symbol'];\n\t\t\t$strlen = strlen($string);\n\t\t\t$testlen = strlen($filterBy);\n\t\t\tif ($strlen < $testlen) return false;\n\t\t\treturn substr_compare($string, $filterBy , $strlen - $testlen, $testlen) === 0;    \t\t\n\t\t});\n\n\t\t$usdt_coins = array_map(function ($var) use ($filterBy) {\n\t\t\t$string = $var['symbol'];\n\t\t\t$strlen = strlen($string);\n\t\t\t$testlen = strlen($filterBy);\n\t\t\tif ($strlen < $testlen) return;\n\t\t\t$var['symbol'] = substr($string,  0 , $strlen - $testlen);\n\t\t\treturn $var;\t\n\t\t}, $usdt_coins);\n\n\t\tusort($usdt_coins, function($a, $b) {\n\t\t\treturn $b['quoteVolume'] - $a['quoteVolume'];\n\t\t});\n\n\t\t$filterBy = 'BTC'; // ends with\n\n\t\t$btc_coins = array_filter($contents, function ($var) use ($filterBy) {\n\t\t\t$string = $var['symbol'];\n\t\t\t$strlen = strlen($string);\n\t\t\t$testlen = strlen($filterBy);\n\t\t\tif ($strlen < $testlen) return false;\n\t\t\treturn substr_compare($string, $filterBy , $strlen - $testlen, $testlen) === 0;    \t\t\n\t\t});\n\n\t\t$btc_coins = array_map(function ($var) use ($filterBy) {\n\t\t\t$string = $var['symbol'];\n\t\t\t$strlen = strlen($string);\n\t\t\t$testlen = strlen($filterBy);\n\t\t\tif ($strlen < $testlen) return;\n\t\t\t$var['symbol'] = substr($string,  0 , $strlen - $testlen);\n\t\t\treturn $var;\t\n\t\t}, $btc_coins);\n\t\tusort($btc_coins, function($a, $b) {\n\t\t\treturn $b['quoteVolume'] - $a['quoteVolume'];\n\t\t});\n\n\t\t//dd($coins);\n\n\t\treturn view('binance.index',[\n\t\t\t'usdt_coins' => $usdt_coins,\n\t\t\t'btc_coins' => $btc_coins,\n\t\t]);\n\t}\n}\n\n\n",
 			"file": "app/Http/Controllers/BittrexController.php",
-			"file_size": 2333,
-			"file_write_time": 131618759340949207,
 			"settings":
 			{
-				"buffer_size": 2362,
+				"buffer_size": 3963,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<?php\n\nnamespace App\\Http\\Controllers;\n\nuse Illuminate\\Http\\Request;\nuse GuzzleHttp\\Client;\nuse GuzzleHttp\\Response;\n\nclass BitfinexController extends Controller\n{\n\tprotected $api_client;\n\tprotected $symbols;\n\t/**\n\t * Create a new controller instance.\n\t *\n\t * @return void\n\t */\n\tpublic function __construct()\n\t{\n\t\t//$this->middleware('auth');\n\t\t// Create a client with a base URI\n\n\t\t$this->api_client = new Client(['base_uri' => 'https://api.bitfinex.com/v2/tickers']); //https://api.bitfinex.com/v2/tickers?symbols=tBTCUSD\n\n\t\t$temp_client = new Client(['base_uri' => 'https://api.bitfinex.com/v1/']);\n\t\t$response = $temp_client->request('GET', 'symbols');\n\t\t$this->symbols = array_map('strtoupper', json_decode($response->getBody(true)->getContents(),true)); \n\t}\n\n\t/**\n\t * Show the application dashboard.\n\t *\n\t * @return \\Illuminate\\Http\\Response\n\t */\n\tpublic function index()\n\t{\n\t\t$query_string = \"?symbols=t\" . implode(\",t\",$this->symbols);\n\t\t\n\t\t//dd($query_string);\n\t\t// Send a request to https://bittrex.com/api/v1.1/public/getmarketsummaries\n\t\t$response = $this->api_client->request('GET', $query_string);\n\n\t\t$contents = json_decode($response->getBody(true)->getContents(),true);\n\n\t\t$contents = array_map(function($coin) {\n\t\t\treturn  [//\n\t\t\t\"symbol\" => substr($coin[0], 1),\n\t\t\t\t//\"bid\" => $coin[1],\n\t\t\t\t//\"bid_size\" => $coin[2],\n\t\t\t\t//\"ask\" => $coin[3],\n\t\t\t\t//\"ask_size\" => $coin[4],\n\t\t\t\"daily_change\" => $coin[5],\n\t\t\t\"daily_change_perc\" => $coin[6]*100,\n\t\t\t\"last_price\" => $coin[7],\n\t\t\t\"volume\" => $coin[8]*$coin[7],\t\t\t\t\n\t\t\t\"high\" => $coin[9],\n\t\t\t\"low\" => $coin[10]\n\t\t]; \n\t}, $contents);\n\n\t\t//dd($contents);\n\n\t\t$filterBy = 'USD'; // ends with\n\t\t$usdt_coins = array_filter($contents, function ($var) use ($filterBy) {\n\t\t\t$string = $var['symbol'];\n\t\t\t$strlen = strlen($string);\n\t\t\t$testlen = strlen($filterBy);\n\t\t\tif ($strlen < $testlen) return false;\n\t\t\treturn substr_compare($string, $filterBy , $strlen - $testlen, $testlen) === 0;    \t\t\n\t\t});\n\n\t\t$usdt_coins = array_map(function ($var) use ($filterBy) {\n\t\t\t$string = $var['symbol'];\n\t\t\t$strlen = strlen($string);\n\t\t\t$testlen = strlen($filterBy);\n\t\t\t$var['symbol'] = substr($string,  0 , $strlen - $testlen);\n\t\t\treturn $var;\t\n\t\t}, $usdt_coins);\n\n\t\t//dd($usdt_coins);\n\n\t\tusort($usdt_coins, function($a, $b) {\n\t\t\treturn $b['volume'] - $a['volume'];\n\t\t});\n\n\n\n\t\t//dd($usdt_coins);\n\n\t\t$filterBy = 'BTC'; // ends with\n\t\t$btc_coins = array_filter($contents, function ($var) use ($filterBy) {\n\t\t\t$string = $var['symbol'];\n\t\t\t$strlen = strlen($string);\n\t\t\t$testlen = strlen($filterBy);\n\t\t\tif ($strlen < $testlen) return false;\n\t\t\treturn substr_compare($string, $filterBy , $strlen - $testlen, $testlen) === 0;    \t\t\n\t\t});\n\n\t\t$btc_coins = array_map(function ($var) use ($filterBy) {\n\t\t\t$string = $var['symbol'];\n\t\t\t$strlen = strlen($string);\n\t\t\t$testlen = strlen($filterBy);\n\t\t\t$var['symbol'] = substr($string,  0 , $strlen - $testlen);\n\t\t\treturn $var;\t\n\t\t}, $btc_coins);\n\n\t\tusort($btc_coins, function($a, $b) {\n\t\t\treturn $b['volume'] - $a['volume'];\n\t\t});\n\n\t\t//dd($btc_coins);\n\n\t\t$filterBy = 'ETH'; // ends with\n\t\t$eth_coins = array_filter($contents, function ($var) use ($filterBy) {\n\t\t\t$string = $var['symbol'];\n\t\t\t$strlen = strlen($string);\n\t\t\t$testlen = strlen($filterBy);\n\t\t\tif ($strlen < $testlen) return false;\n\t\t\treturn substr_compare($string, $filterBy , $strlen - $testlen, $testlen) === 0;    \t\t\n\t\t});\n\n\t\t$eth_coins = array_map(function ($var) use ($filterBy) {\n\t\t\t$string = $var['symbol'];\n\t\t\t$strlen = strlen($string);\n\t\t\t$testlen = strlen($filterBy);\n\t\t\t$var['symbol'] = substr($string,  0 , $strlen - $testlen);\n\t\t\treturn $var;\t\n\t\t}, $eth_coins);\n\n\t\tusort($eth_coins, function($a, $b) {\n\t\t\treturn $b['volume'] - $a['volume'];\n\t\t});\n\n\t\t//dd($btc_coins);\n\n\t\treturn view('bitfinex.index',[\n\t\t\t'usdt_coins' => $usdt_coins,\n\t\t\t'btc_coins' => $btc_coins,\n\t\t\t'eth_coins' => $eth_coins,\n\t\t]);\n\t}\n}\n\n\n// \t\t{\n// \"MarketName\": \"USDT-ADA\",\n// \"High\": 0.52180897,\n// \"Low\": 0.47000001,\n// \"Volume\": 3973860.78129699,\n// \"Last\": 0.51335656,\n// \"BaseVolume\": 1969692.29553585,\n// \"TimeStamp\": \"2018-02-01T03:25:56.603\",\n// \"Bid\": 0.51068,\n// \"Ask\": 0.51335656,\n// \"OpenBuyOrders\": 888,\n// \"OpenSellOrders\": 4699,\n// \"PrevDay\": 0.49508427,\n// \"Created\": \"2017-12-29T19:24:39.987\"\n// }",
+			"file": "app/Http/Controllers/BitfinexController.php",
+			"file_size": 4244,
+			"file_write_time": 131622926279322916,
+			"settings":
+			{
+				"buffer_size": 4232,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "resources/views/spread/bittrex.blade.php",
+			"settings":
+			{
+				"buffer_size": 2780,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "resources/views/bithumb/index.blade.php",
+			"file": "resources/views/spread/bithumb.blade.php",
 			"settings":
 			{
-				"buffer_size": 1515,
+				"buffer_size": 2770,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "resources/views/spread/binance.blade.php",
+			"settings":
+			{
+				"buffer_size": 9128,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -41,35 +86,7 @@
 			"file": "resources/views/binance/index.blade.php",
 			"settings":
 			{
-				"buffer_size": 3545,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/Http/Controllers/CoinmarketcapController.php",
-			"settings":
-			{
-				"buffer_size": 1558,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "resources/views/coinmarketcap/index.blade.php",
-			"settings":
-			{
-				"buffer_size": 2678,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "resources/views/layouts/app.blade.php",
-			"settings":
-			{
-				"buffer_size": 3534,
-				"encoding": "UTF-8",
+				"buffer_size": 5393,
 				"line_ending": "Unix"
 			}
 		}
@@ -125,26 +142,42 @@
 		"/var/www/html/spread/app/Http",
 		"/var/www/html/spread/app/Http/Controllers",
 		"/var/www/html/spread/resources",
-		"/var/www/html/spread/resources/assets",
-		"/var/www/html/spread/resources/assets/sass",
 		"/var/www/html/spread/resources/views",
-		"/var/www/html/spread/resources/views/coinmarketcap",
-		"/var/www/html/spread/resources/views/layouts"
+		"/var/www/html/spread/resources/views/binance",
+		"/var/www/html/spread/resources/views/bitfinex",
+		"/var/www/html/spread/resources/views/bithumb",
+		"/var/www/html/spread/resources/views/ethereum",
+		"/var/www/html/spread/resources/views/layouts",
+		"/var/www/html/spread/resources/views/spread",
+		"/var/www/html/spread/routes"
 	],
 	"file_history":
 	[
-		"/var/www/html/spread/app/Http/Controllers/BithumbController.php",
 		"/var/www/html/spread/app/Http/Controllers/BinanceController.php",
-		"/var/www/html/spread/app/Providers/AppServiceProvider.php",
-		"/var/www/html/spread/public/css/app.css",
+		"/var/www/html/spread/app/Http/Controllers/BitfinexController.php",
+		"/var/www/html/spread/app/Http/Controllers/BithumbController.php",
+		"/var/www/html/spread/app/Http/Controllers/HomeController.php",
 		"/var/www/html/spread/resources/views/home.blade.php",
 		"/var/www/html/spread/resources/views/welcome.blade.php",
+		"/var/www/html/spread/app/Http/Controllers/EthController.php",
+		"/var/www/html/spread/app/Http/Controllers/CoinmarketcapController.php",
+		"/var/www/html/spread/app/Http/Controllers/BittrexController.php",
+		"/var/www/html/spread/routes/web.php",
+		"/var/www/html/spread/resources/views/layouts/app.blade.php",
+		"/var/www/html/spread/app/Http/Controllers/Auth/LoginController.php",
+		"/var/www/html/spread/config/app.php",
+		"/var/www/html/spread/resources/views/bittrex/index.blade.php",
+		"/var/www/html/spread/resources/views/ethereum/index.blade.php",
+		"/var/www/html/spread/resources/views/coinmarketcap/index.blade.php",
+		"/var/www/html/spread/resources/views/binance/index.blade.php",
+		"/var/www/html/spread/resources/views/bitfinex/index.blade.php",
+		"/var/www/html/spread/resources/views/bithumb/index.blade.php",
+		"/var/www/html/spread/app/Providers/AppServiceProvider.php",
+		"/var/www/html/spread/public/css/app.css",
 		"/var/www/html/spread/resources/assets/sass/app.scss",
 		"/var/www/html/spread/resources/assets/sass/_variables.scss",
-		"/var/www/html/spread/resources/views/layouts/app.blade.php",
 		"/var/www/html/spread/.env",
 		"/var/www/html/spread/composer.json",
-		"/var/www/html/spread/app/Http/Controllers/HomeController.php",
 		"/var/www/html/spread/spread.sublime-project",
 		"/var/www/html/test/resources/views/home.blade.php",
 		"/var/www/html/test/resources/views/welcome.blade.php",
@@ -153,7 +186,7 @@
 	],
 	"find":
 	{
-		"height": 42.0
+		"height": 91.0
 	},
 	"find_in_files":
 	{
@@ -171,6 +204,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			">\";\n",
+			"dd",
+			"bittrex",
+			"bitfinex_client",
 			"AppServiceProvider.php",
 			"laravel",
 			"Dashboard"
@@ -191,24 +228,24 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "routes/web.php",
+					"file": "app/Http/Controllers/SpreadController.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 757,
+						"buffer_size": 12446,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								713,
-								713
+								8138,
+								8138
 							]
 						],
 						"settings":
@@ -216,145 +253,85 @@
 							"syntax": "Packages/PHP/PHP.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "app/Http/Controllers/BittrexController.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2362,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								723,
-								723
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 540.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "resources/views/bithumb/index.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1515,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1041,
-								1041
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 90.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "resources/views/binance/index.blade.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3545,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1172,
-								1172
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 8611.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "app/Http/Controllers/CoinmarketcapController.php",
-					"semi_transient": false,
+					"buffer": 1,
+					"file": "app/Http/Controllers/BittrexController.php",
+					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 1558,
+						"buffer_size": 3963,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1475,
-								1551
+								0,
+								0
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 990.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/Http/Controllers/BitfinexController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4232,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1652,
+								1951
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 810.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "resources/views/coinmarketcap/index.blade.php",
+					"buffer": 3,
+					"file": "resources/views/spread/bittrex.blade.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2678,
+						"buffer_size": 2780,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2275,
-								0
+								2388,
+								2388
 							]
 						],
 						"settings":
@@ -371,33 +348,93 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "resources/views/layouts/app.blade.php",
+					"buffer": 4,
+					"file": "resources/views/spread/bithumb.blade.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3534,
+						"buffer_size": 2770,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1716,
-								1716
+								854,
+								868
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"tab_size": 4,
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "resources/views/spread/binance.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9128,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3802,
+								3802
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1290.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "resources/views/binance/index.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5393,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1638,
+								1638
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
@@ -405,7 +442,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 42.0
+		"height": 45.0
 	},
 	"input":
 	{
@@ -442,7 +479,7 @@
 	"project": "spread.sublime-project",
 	"replace":
 	{
-		"height": 78.0
+		"height": 84.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -480,7 +517,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 682.0,
+	"side_bar_width": 324.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
