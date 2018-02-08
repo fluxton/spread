@@ -144,7 +144,7 @@ class SpreadController extends Controller
 
 			}
 
-		
+
 		}
 
 		//dd($full_spread);//
@@ -180,17 +180,52 @@ class SpreadController extends Controller
 
 		$markets = ['binance','bitfinex'];
 
-		foreach ($market_coins_available as $coin_available) {
-			//echo " <br><br> +++++++++++++++++++++++++++++++++  <br> coin : " . $coin_available . "<br><br>";
+		// $other_exchanges_empty = function($coin_avail,$coin_sym) use ($markets) {
+		// 	foreach ($markets as $market_name) {
+		// 		if(isset($coin_prices[$market_name][$coin_avail][$coin_sym])){
+		// 			return false;
+		// 		}
+		// 	}
+		// 	return true;
+		// };
+		
 
-			foreach($coin_prices['bittrex'][$coin_available] as $coin_symbol => $bittrex_price){
-				//echo " <br> ------------------------------  <br> coin_symbol : " . $coin_symbol . " , binance price : " .  $bittrex_price . "<br>";
+		//echo $coin_prices['binance']['USDT']['BTC'];
+
+		//dd($coin_prices['bittrex']['USDT']);
+		//dd($coin_prices['binance']['USDT']['BTC']);
+
+		foreach ($market_coins_available as $coin_available) {
+
+			$filtered_coins = array_filter(
+				$coin_prices['bittrex'][$coin_available],
+				function ($coin_sym) use ($markets,$coin_available,$coin_prices) {
+					//echo "coin :" . $coin_sym . "<br>";
+					foreach ($markets as $market_name) { 
+						if(!empty($coin_prices[$market_name][$coin_available][$coin_sym])){
+							//echo "found!<br>";
+							return true;
+						}
+					}
+					//echo "found!<br>";
+					return false;
+				},
+				ARRAY_FILTER_USE_KEY
+			);
+
+			//dd($filtered_coins);
+			
+			foreach($filtered_coins as $coin_symbol => $bittrex_price){
+				//foreach($coin_prices['bittrex'][$coin_available] as $coin_symbol => $bittrex_price){
+				//if (other_exchanges_empty($coin_available,$coin_symbol)) { continue; }
+
 				$full_spread[$coin_available][$coin_symbol] = [];
 				$full_spread[$coin_available][$coin_symbol]['bittrex'] = $bittrex_price;
 
 				foreach ($markets as $market_name) {
+
 					if(isset($coin_prices[$market_name][$coin_available][$coin_symbol])){
-						//echo " market : " . $market_name . " , price : " . $coin_prices[$market_name][$coin_available][$coin_symbol] . "<br>";
+						
 						$full_spread[$coin_available][$coin_symbol][$market_name] = $coin_prices[$market_name][$coin_available][$coin_symbol];
 						$full_spread[$coin_available][$coin_symbol][$market_name."-diff"] = $coin_prices[$market_name][$coin_available][$coin_symbol]-$bittrex_price;
 						$full_spread[$coin_available][$coin_symbol][$market_name."-diff-perc"] = ($coin_prices[$market_name][$coin_available][$coin_symbol]-$bittrex_price)*100/$bittrex_price;
@@ -199,7 +234,7 @@ class SpreadController extends Controller
 
 			}
 
-		
+
 		}
 
 		//dd($full_spread);//
@@ -225,11 +260,11 @@ class SpreadController extends Controller
 
 		if(!empty($symbols)){
 			$coins = array_filter($contents, function ($var) use ($symbols) {
-			$string = $var['MarketName'];
+				$string = $var['MarketName'];
 			//$string = substr($string,  -3 , 3);
-			$string = substr($string, strpos($string, "-") + 1);  
+				$string = substr($string, strpos($string, "-") + 1);  
 			//echo $string . PHP_EOL;;
-			return ($string == 'BCC') || in_array($string, $symbols);    		
+				return ($string == 'BCC') || in_array($string, $symbols);    		
 			});
 		}
 		else{
@@ -289,9 +324,9 @@ class SpreadController extends Controller
 
 		if(!empty($symbols)){
 			$coins = array_filter($contents, function ($var) use ($symbols) {
-			$string = $var['symbol'];
-			$string = substr($string,  0 , 3);
-			return ($string == 'BCC') || in_array($string, $symbols);    		
+				$string = $var['symbol'];
+				$string = substr($string,  0 , 3);
+				return ($string == 'BCC') || in_array($string, $symbols);    		
 			});
 		}
 		else{
@@ -345,14 +380,14 @@ class SpreadController extends Controller
 		if(!empty($symbols)){
 			$query_symbols = array_filter($temp_symbols, function ($var) use ($symbols) {
 				//echo $var . "<br>";
-			$string = substr($var,  0 , 3);
-			return in_array($string, $symbols);    		
+				$string = substr($var,  0 , 3);
+				return in_array($string, $symbols);    		
 			});	
 		}
 		else{
 			$query_symbols = $temp_symbols;
 		}	
-			
+
 
 		$query_string = "?symbols=t" . implode(",t", $query_symbols);
 
@@ -422,8 +457,8 @@ class SpreadController extends Controller
 
 		if(!empty($symbols)){
 			$coins = array_filter($contents, function ($var) use ($symbols) {
-			$string = $var[0];
-			return in_array($string, $symbols);    		
+				$string = $var[0];
+				return in_array($string, $symbols);    		
 			});
 		}
 		else{
