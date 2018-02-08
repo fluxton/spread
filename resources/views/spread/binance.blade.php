@@ -6,7 +6,7 @@
     <div class="col-md-10">      
       <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#usdt">Show/Hide USDT </button><br>     
       <div id="usdt" class="panel panel-default collapse in">
-        <table class="table"  table-striped>
+        <table class="table table-striped">
           <thead>
             <tr>
               <th> coin </th>
@@ -21,7 +21,16 @@
           </thead>
           <tbody>
            @foreach($data['USDT'] as $symbol => $coin)
-           <tr>
+           <tr class="
+           @if(isset($coin['bittrex-diff-perc']))
+           {{ $coin['bittrex-diff-perc'] > 2 ? "info" : ""  }}
+           {{ $coin['bittrex-diff-perc'] < -2 ? "success" : ""  }}
+           @endif
+           @if(isset($coin['bitfinex-diff-perc']))
+           {{ $coin['bitfinex-diff-perc'] > 2 ? "info" : ""  }}           
+           {{ $coin['bitfinex-diff-perc'] < -2 ? "success" : ""  }}
+           {@endif
+           ">
             <td> {{ $symbol }} </td>
             <td class="text-right"> {{ number_format($coin['binance'],2) }} $</td>
             @if(isset($coin['bitfinex']))
@@ -65,7 +74,7 @@
 
     <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#btc">Show/Hide BTC </button><br>     
       <div id="btc" class="panel panel-default collapse in">
-        <table class="table"  table-striped>
+        <table class="table table-striped">
           <thead>
             <tr>
               <th> coin </th>
@@ -80,7 +89,16 @@
           </thead>
           <tbody>
            @foreach($data['BTC'] as $symbol => $coin)
-           <tr>
+           <tr class="
+           @if(isset($coin['bittrex-diff-perc']))
+           {{ $coin['bittrex-diff-perc'] > 2 ? "info" : ""  }}
+           {{ $coin['bittrex-diff-perc'] < -2 ? "success" : ""  }}
+           @endif
+           @if(isset($coin['bitfinex-diff-perc']))
+           {{ $coin['bitfinex-diff-perc'] > 2 ? "info" : ""  }}           
+           {{ $coin['bitfinex-diff-perc'] < -2 ? "success" : ""  }}
+           {@endif
+           ">
             <td> {{ $symbol }} </td>
             <td class="text-right"> {{ number_format($coin['binance'],8) }} </td>
             @if(isset($coin['bitfinex']))
@@ -124,7 +142,7 @@
 
     <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#eth">Show/Hide ETH </button><br>     
       <div id="eth" class="panel panel-default collapse in">
-        <table class="table"  table-striped>
+        <table class="table table-striped">
           <thead>
             <tr>
               <th> coin </th>

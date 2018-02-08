@@ -6,7 +6,7 @@
     <div class="col-md-10">      
       <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#usdt">Show/Hide USDT </button><br>     
       <div id="usdt" class="panel panel-default collapse in">
-        <table class="table"  table-striped>
+        <table id="ordering" class="table table-striped table-bordered" cellspacing="0" width="100%">
           <thead>
             <tr>
               <th> symbol </th>
@@ -105,6 +105,20 @@
 
 
 </div>
+
+
+
+
+@include('layouts.datatable-layout')
+
+<script>
+$(document).ready(function() {
+    $('#ordering').DataTable();
+} );
+</script>
+
+
+
 @endsection
 
 {{--  "symbol" => "BTCUSDT"

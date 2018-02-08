@@ -126,10 +126,22 @@ class SpreadController extends Controller
 		$markets = ['bittrex','bitfinex'];
 
 		foreach ($market_coins_available as $coin_available) {
-			//echo " <br><br> +++++++++++++++++++++++++++++++++  <br> coin : " . $coin_available . "<br><br>";
+			$filtered_coins = array_filter(
+				$coin_prices['binance'][$coin_available],
+				function ($coin_sym) use ($markets,$coin_available,$coin_prices) {
+					foreach ($markets as $market_name) { 
+						if(!empty($coin_prices[$market_name][$coin_available][$coin_sym])){
+							return true;
+						}
+					}
+					return false;
+				},
+				ARRAY_FILTER_USE_KEY
+			);
 
-			foreach($coin_prices['binance'][$coin_available] as $coin_symbol => $binance_price){
-				//echo " <br> ------------------------------  <br> coin_symbol : " . $coin_symbol . " , binance price : " .  $binance_price . "<br>";
+			//dd($filtered_coins);
+
+			foreach($filtered_coins as $coin_symbol => $binance_price){
 				$full_spread[$coin_available][$coin_symbol] = [];
 				$full_spread[$coin_available][$coin_symbol]['binance'] = $binance_price;
 
@@ -164,11 +176,7 @@ class SpreadController extends Controller
 		$coin_prices['binance'] = $this->getBinanceInfo($this->symbols);
 		$coin_prices['bitfinex'] = $this->getBitfinexInfo($this->symbols);
 
-		//dd($coin_prices);
-
 		$symbols_avail = $coin_prices['bittrex'];
-
-		//dd($symbols_avail);
 
 		$full_spread = [
 			'USDT' => [],
@@ -180,52 +188,26 @@ class SpreadController extends Controller
 
 		$markets = ['binance','bitfinex'];
 
-		// $other_exchanges_empty = function($coin_avail,$coin_sym) use ($markets) {
-		// 	foreach ($markets as $market_name) {
-		// 		if(isset($coin_prices[$market_name][$coin_avail][$coin_sym])){
-		// 			return false;
-		// 		}
-		// 	}
-		// 	return true;
-		// };
-		
-
-		//echo $coin_prices['binance']['USDT']['BTC'];
-
-		//dd($coin_prices['bittrex']['USDT']);
-		//dd($coin_prices['binance']['USDT']['BTC']);
-
 		foreach ($market_coins_available as $coin_available) {
-
 			$filtered_coins = array_filter(
 				$coin_prices['bittrex'][$coin_available],
 				function ($coin_sym) use ($markets,$coin_available,$coin_prices) {
-					//echo "coin :" . $coin_sym . "<br>";
 					foreach ($markets as $market_name) { 
 						if(!empty($coin_prices[$market_name][$coin_available][$coin_sym])){
-							//echo "found!<br>";
 							return true;
 						}
 					}
-					//echo "found!<br>";
 					return false;
 				},
 				ARRAY_FILTER_USE_KEY
 			);
-
-			//dd($filtered_coins);
 			
 			foreach($filtered_coins as $coin_symbol => $bittrex_price){
-				//foreach($coin_prices['bittrex'][$coin_available] as $coin_symbol => $bittrex_price){
-				//if (other_exchanges_empty($coin_available,$coin_symbol)) { continue; }
-
 				$full_spread[$coin_available][$coin_symbol] = [];
 				$full_spread[$coin_available][$coin_symbol]['bittrex'] = $bittrex_price;
 
 				foreach ($markets as $market_name) {
-
-					if(isset($coin_prices[$market_name][$coin_available][$coin_symbol])){
-						
+					if(isset($coin_prices[$market_name][$coin_available][$coin_symbol])){						
 						$full_spread[$coin_available][$coin_symbol][$market_name] = $coin_prices[$market_name][$coin_available][$coin_symbol];
 						$full_spread[$coin_available][$coin_symbol][$market_name."-diff"] = $coin_prices[$market_name][$coin_available][$coin_symbol]-$bittrex_price;
 						$full_spread[$coin_available][$coin_symbol][$market_name."-diff-perc"] = ($coin_prices[$market_name][$coin_available][$coin_symbol]-$bittrex_price)*100/$bittrex_price;
