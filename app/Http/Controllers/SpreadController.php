@@ -57,13 +57,15 @@ class SpreadController extends Controller
 		$coin_prices = [];
 
 		$coin_prices['bithumb'] = $this->getBithumbInfo($this->symbols);
-		$coin_prices['bittrex'] = $this->getBittrexInfo($this->symbols);
-		$coin_prices['binance'] = $this->getBinanceInfo($this->symbols);
-		//$coin_prices['bitfinex'] = $this->getBitfinexInfo($symbols);
+		$coin_prices['bittrex'] = $this->getBittrexInfo($this->symbols)['USDT'];
+		$coin_prices['binance'] = $this->getBinanceInfo($this->symbols)['USDT'];
+		//$coin_prices['bitfinex'] = $this->getBitfinexInfo($this->$symbols);
 
 		//dd($coin_prices);
 
 		$symbols_avail = $coin_prices['bithumb'];
+
+		//dd($symbols_avail);
 
 		$full_spread = [] ;
 
@@ -87,12 +89,13 @@ class SpreadController extends Controller
 
 		}
 
+		$available_withdrawal = ['BTC','ETH','DASH','LTC','ETC','XRP','BCH','XMR','ZEC','QTUM'];
 
-
-		//dd($full_spread);//
+		//dd($full_spread);
 
 		return view('spread.bithumb',[
-			'data' => $full_spread
+			'data' => $full_spread,
+			'available_withdrawal' => $available_withdrawal,
 		]);
 	}
 
@@ -247,11 +250,10 @@ class SpreadController extends Controller
 
 		foreach ($coins as $coin) {
 			$string = $coin['MarketName'];
-			//$symbol = substr($string,  -3 , 3);
-			$symbol = substr($string, strpos($string, "-") + 1);  
+			$symbol = substr($string, strpos($string, "-") + 1);
 			if ($symbol == 'BCC'){
 				$symbol = 'BCH';				
-			} 
+			}
 			if(substr_compare($string, 'USDT' , 0, 4) === 0){
 				$usdt_coins[$symbol] = $coin['Last'];
 			}
@@ -262,6 +264,8 @@ class SpreadController extends Controller
 				$eth_coins[$symbol] = $coin['Last'];
 			}
 		}
+
+
 
 
 		$coins = [
@@ -305,7 +309,7 @@ class SpreadController extends Controller
 		foreach ($coins as $coin) {
 			$string = $coin['symbol'];
 			$symbol = substr($string,  0 , 3);
-			if ($symbol == 'BCC') $symbol = 'BCH';			
+			if ($symbol == 'BCC') $symbol = 'BCH';		
 			if(substr_compare($string, 'USDT' , 3, 4) === 0){
 				$usdt_coins[$symbol] = $coin['lastPrice'];
 			}
@@ -317,11 +321,15 @@ class SpreadController extends Controller
 			}
 		}
 
+		
+
 		$coins = [
 			'USDT' => $usdt_coins,
 			'BTC' => $btc_coins,
 			'ETH' => $eth_coins,
 		];
+
+		//dd($coins);
 
 		return $coins;
 	}
@@ -422,19 +430,20 @@ class SpreadController extends Controller
 			$coins = $contents;
 		}
 
-		usort($coins, function($a, $b) {
-			return $b['volume'] - $a['volume'];
-		});
+		 //dd($coins);
+
+		// usort($coins, function($a, $b) {
+		// 	return $b['volume'] - $a['volume'];
+		// });
 
 		$usdt_prices = [];	
 
-		foreach ($symbols as $key) {
-			if (isset($coins[$key]) && is_array($coins[$key])){				
-				$usdt_prices[$key] = $coins[$key]["sell_price"] * 0.000915;
-			}
-		}		
-
-		//dd($usdt_prices);
+		foreach ($coins as $key => $coin) {
+			if(is_array($coin)) {
+				$usdt_prices[$key] = $coin["sell_price"] * 0.000915;
+			}			
+			
+		}
 
 		return $usdt_prices;
 		

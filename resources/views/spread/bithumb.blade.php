@@ -21,7 +21,11 @@
           <tbody>
            @foreach($data as $symbol => $coin)
            <tr>
-            <td> {{ $symbol }} </td>
+            <td> {{ $symbol }}
+            @if(!in_array($symbol, $available_withdrawal))
+            <span style="color: red;"> *</span>
+            @endif
+            </td>
             <td class="text-right"> {{ number_format($coin['bithumb'],2) }} $</td>
             @if(isset($coin['binance']))
               <td class="text-right"> {{ number_format($coin['binance'],2) }} $</td>
@@ -58,6 +62,7 @@
         </tbody>
       </table>
     </div>
+    <p><span style="color: red;">* </span>These coins are not available for withdrawal from bithumb. That means you can send these coins to bithumb wallet but you can't send them from bithumb to another wallet.</p>
 
 
   </div>
