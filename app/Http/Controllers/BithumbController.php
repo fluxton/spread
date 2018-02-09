@@ -8,7 +8,6 @@ use GuzzleHttp\Response;
 
 class BithumbController extends Controller
 {
-	protected $krw_to_usd = 0.00094;
 	/**
 	 * Create a new controller instance.
 	 *
@@ -33,29 +32,23 @@ class BithumbController extends Controller
 		$response = $client->request('GET', 'all');
 
 		$content = json_decode($response->getBody(true)->getContents(),true);
-		$coins = $content['data'];
-
-		$krw_to_usd = 0.00094;
-
-		$usd_coins = [];
-
-		
-
-		foreach ($coins as $key => $value) {
-			if (is_array($value)){
-				$value = array_map(function($a) {
-	 				return $a * 0.00094;
-				}, $value);
-				$usd_coins[$key] = $value;
+		if(empty($content['data'])) {
+			if(!empty($content['message'])){
+				$message = $content['message'];
+				$string = "<p>problems with bithumb APIs</p><p>" . $message ."</p>";
+				return $string;
 			}
+			else{
+				return "<p>problems with bithumb APIs</p>";
+			}
+			
 		}
+
+		$coins = array_filter($content['data'], function($val) { return is_array($val); });
 		
-		
-
-
-
 		return view('bithumb.index',[
-          'coins' => $usd_coins
+          'coins' => $coins,
+          'default_rate' => 0.00094
       ]);
 	}
 }

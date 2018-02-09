@@ -12,6 +12,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 </head>
 <body>
     <div id="app">
@@ -89,5 +91,11 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    {{-- <script type="text/javascript">
+        require( 'datatables.net-bs4' )();
+        require( 'datatables.net-buttons-bs4' )();
+        require( 'datatables.net-buttons/js/buttons.colVis.js' )();
+        require( 'datatables.net-fixedheader-bs4' )();
+    </script> --}}
 </body>
 </html>

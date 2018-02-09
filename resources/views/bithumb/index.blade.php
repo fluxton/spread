@@ -3,28 +3,35 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
+      <div class="col-md-6">
+      Korean Won Excange rate: <input type="text"  value="{{ $default_rate }}" id="krw_to_usd">&nbsp;<input type="button" value="update data" onclick="updateChange()">
+    </div>
+    </div>
+    <br>
+      <div class="row">
+        <div class="col-md-8">
             <div class="panel panel-default">
-                <div class="panel-heading">Coin Market Cap Info</div>                
+                
 
-               <table class="table"  table-striped>
+
+               <table class="table table-striped table-bordered sortable">
           <thead>
             <tr>
               <th> symbol </th>
-              <th class="text-right"> usd </th> 
-              <th class="text-right"> day highest </th>
-              <th class="text-right"> day lowest </th>
-              <th class="text-right"> volume ($) </th>
+              <th class="text-center"> usd </th> 
+              <th class="text-center"> day highest </th>
+              <th class="text-center"> day lowest </th>
+              <th class="text-center"> volume ($) </th>
             </tr>
           </thead>
           <tbody>
            @foreach($coins as $symbol => $coin)
            <tr>
             <td> {{ $symbol }} </td>
-            <td class="text-right"> {{ $coin['sell_price'] }} </td>
-            <td class="text-right"> {{ $coin['max_price'] }} </td>
-            <td class="text-right"> {{ $coin['min_price'] }} </td>
-            <td class="text-right"> {{ intval($coin['volume_1day']*$coin['sell_price']*1063.83) }} </td>
+            <td name="rate_updatable" class="text-right" data-value="{{ $coin['sell_price'] }}"> {{ number_format($coin['sell_price']*$default_rate,2) }} $</td>
+            <td name="rate_updatable" class="text-right" data-value="{{ $coin['max_price'] }}"> {{ number_format($coin['max_price']*$default_rate,2) }} $</td>
+            <td name="rate_updatable" class="text-right" data-value="{{ $coin['min_price'] }}"> {{ number_format($coin['min_price']*$default_rate,2) }} $</td>
+            <td name="volume_updatable" class="text-right" data-value="{{ $coin['volume_1day'] }}"> {{ intval($coin['volume_1day']*$coin['sell_price']*0.00094) }} $</td>
           </tr>
           @endforeach
         </tbody>
@@ -37,6 +44,20 @@
 
 
   </div>
+
+  @include('layouts.datatable-layout')
+  <script>
+  function updateChange() {
+      var rate = document.getElementById("krw_to_usd").value;
+      var list = document.getElementsByName("rate_updatable");
+
+      for (var div of list) {
+        var krw_value = div.getAttributeNode("data-value").value;
+        var new_value = (krw_value*rate).toFixed(2);  
+        div.innerHTML = new_value + " $";  
+      }
+  }
+  </script>
   @endsection
 
 

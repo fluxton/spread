@@ -44,24 +44,24 @@ class BitfinexController extends Controller
 
 		$contents = array_map(function($coin) {
 			return  [//
-				"symbol" => substr($coin[0], 1),
+			"symbol" => substr($coin[0], 1),
 				//"bid" => $coin[1],
 				//"bid_size" => $coin[2],
 				//"ask" => $coin[3],
 				//"ask_size" => $coin[4],
-				"daily_change" => $coin[5],
-				"daily_change_perc" => $coin[6]*100,
-				"last_price" => $coin[7],
-				"volume" => $coin[8]*$coin[7],				
-				"high" => $coin[9],
-				"low" => $coin[10]
-			]; 
-		}, $contents);
+			"daily_change" => $coin[5],
+			"daily_change_perc" => $coin[6]*100,
+			"last_price" => $coin[7],
+			"volume" => $coin[8]*$coin[7],				
+			"high" => $coin[9],
+			"low" => $coin[10]
+		]; 
+	}, $contents);
 
 		//dd($contents);
 
 		$filterBy = 'USD'; // ends with
-			$usdt_coins = array_filter($contents, function ($var) use ($filterBy) {
+		$usdt_coins = array_filter($contents, function ($var) use ($filterBy) {
 			$string = $var['symbol'];
 			$strlen = strlen($string);
 			$testlen = strlen($filterBy);
@@ -88,7 +88,7 @@ class BitfinexController extends Controller
 		//dd($usdt_coins);
 
 		$filterBy = 'BTC'; // ends with
-			$btc_coins = array_filter($contents, function ($var) use ($filterBy) {
+		$btc_coins = array_filter($contents, function ($var) use ($filterBy) {
 			$string = $var['symbol'];
 			$strlen = strlen($string);
 			$testlen = strlen($filterBy);
@@ -111,7 +111,7 @@ class BitfinexController extends Controller
 		//dd($btc_coins);
 
 		$filterBy = 'ETH'; // ends with
-			$eth_coins = array_filter($contents, function ($var) use ($filterBy) {
+		$eth_coins = array_filter($contents, function ($var) use ($filterBy) {
 			$string = $var['symbol'];
 			$strlen = strlen($string);
 			$testlen = strlen($filterBy);

@@ -6,17 +6,17 @@
     <div class="col-md-10">      
       <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#usdt">Show/Hide USDT </button><br>     
       <div id="usdt" class="panel panel-default collapse in">
-        <table class="table table-striped">
+        <table class="table table-striped table-bordered sortable">
           <thead>
             <tr>
               <th> coin </th>
-              <th class="text-right"> Binance </th>   
-              <th class="text-right"> Bitfinex </th>
-              <th class="text-right"> Price Diff % </th>
-              <th class="text-right"> Price Diff </th>
-              <th class="text-right"> Bittrex </th>
-              <th class="text-right"> Price Diff % </th>
-              <th class="text-right"> Price Diff </th>
+              <th class="text-center"> Binance </th>   
+              <th class="text-center"> Bitfinex </th>
+              <th class="text-center"> Price Diff % </th>
+              <th class="text-center"> Price Diff </th>
+              <th class="text-center"> Bittrex </th>
+              <th class="text-center"> Price Diff % </th>
+              <th class="text-center"> Price Diff </th>
             </tr>
           </thead>
           <tbody>
@@ -32,34 +32,34 @@
            {@endif
            ">
             <td> {{ $symbol }} </td>
-            <td class="text-right"> {{ number_format($coin['binance'],2) }} $</td>
+            <td class="text-right" data-value="{{ $coin['binance'] }}"> {{ number_format($coin['binance'],2) }} $</td>
             @if(isset($coin['bitfinex']))
-            <td class="text-right"> {{ number_format($coin['bitfinex'],2) }} $</td>
+            <td class="text-right" data-value="{{ $coin['bitfinex'] }}"> {{ number_format($coin['bitfinex'],2) }} $</td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
             @if(isset($coin['bitfinex-diff-perc']))
-            <td class="text-right" style="color:{{ $coin['bitfinex-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bitfinex-diff-perc'],3) }} % </td>
+            <td class="text-right" data-value="{{ number_format($coin['bitfinex-diff-perc'],3) }}" style="color:{{ $coin['bitfinex-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bitfinex-diff-perc'],3) }} % </td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
             @if(isset($coin['bitfinex-diff']))
-            <td class="text-right" style="color:{{ $coin['bitfinex-diff'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bitfinex-diff'] ,2)}} $</td>
+            <td class="text-right" data-value="{{ number_format($coin['bitfinex-diff'],3) }}" style="color:{{ $coin['bitfinex-diff'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bitfinex-diff'] ,2)}} $</td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
             @if(isset($coin['bittrex']))
-            <td class="text-right"> {{ number_format($coin['bittrex'],2) }} </td>
+            <td class="text-right" data-value="{{ $coin['bittrex'] }}"> {{ number_format($coin['bittrex'],2) }} $</td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
             @if(isset($coin['bittrex-diff-perc']))
-            <td class="text-right" style="color:{{ $coin['bittrex-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bittrex-diff-perc'],3) }} % </td>
+            <td class="text-right" data-value="{{ number_format($coin['bittrex-diff-perc'],3) }}" style="color:{{ $coin['bittrex-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bittrex-diff-perc'],3) }} % </td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
             @if(isset($coin['bittrex-diff']))
-            <td class="text-right" style="color:{{ $coin['bittrex-diff'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bittrex-diff'] ,2)}} $</td>
+            <td class="text-right" data-value="{{ number_format($coin['bittrex-diff'],3) }}" style="color:{{ $coin['bittrex-diff'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bittrex-diff'] ,2)}} $</td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
@@ -74,17 +74,17 @@
 
     <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#btc">Show/Hide BTC </button><br>     
       <div id="btc" class="panel panel-default collapse in">
-        <table class="table table-striped">
+        <table class="table table-striped table-bordered sortable">
           <thead>
             <tr>
               <th> coin </th>
-              <th class="text-right"> Binance </th>   
-              <th class="text-right"> Bitfinex </th>
-              <th class="text-right"> Price Diff % </th>
-              <th class="text-right"> Price Diff </th>
-              <th class="text-right"> Bittrex </th>
-              <th class="text-right"> Price Diff % </th>
-              <th class="text-right"> Price Diff </th>
+              <th class="text-center"> Binance </th>   
+              <th class="text-center"> Bitfinex </th>
+              <th class="text-center"> Price Diff % </th>
+              <th class="text-center"> Price Diff </th>
+              <th class="text-center"> Bittrex </th>
+              <th class="text-center"> Price Diff % </th>
+              <th class="text-center"> Price Diff </th>
             </tr>
           </thead>
           <tbody>
@@ -100,14 +100,14 @@
            {@endif
            ">
             <td> {{ $symbol }} </td>
-            <td class="text-right"> {{ number_format($coin['binance'],8) }} </td>
+            <td class="text-right"  data-value="{{ $coin['binance'] }}"> {{ number_format($coin['binance'],8) }} </td>
             @if(isset($coin['bitfinex']))
-            <td class="text-right"> {{ number_format($coin['bitfinex'],8) }} </td>
+            <td class="text-right"  data-value="{{ $coin['bitfinex'] }}"> {{ number_format($coin['bitfinex'],8) }} </td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
             @if(isset($coin['bitfinex-diff-perc']))
-            <td class="text-right" style="color:{{ $coin['bitfinex-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bitfinex-diff-perc'],3) }} % </td>
+            <td class="text-right" data-value="{{ number_format($coin['bitfinex-diff-perc'],3) }}" style="color:{{ $coin['bitfinex-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bitfinex-diff-perc'],3) }} %</td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
@@ -117,12 +117,12 @@
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
             @if(isset($coin['bittrex']))
-            <td class="text-right"> {{ number_format($coin['bittrex'],8) }} </td>
+            <td class="text-right"  data-value="{{ $coin['bittrex'] }}"> {{ number_format($coin['bittrex'],8) }} </td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
             @if(isset($coin['bittrex-diff-perc']))
-            <td class="text-right" style="color:{{ $coin['bittrex-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bittrex-diff-perc'],3) }} % </td>
+            <td class="text-right" data-value="{{ number_format($coin['bittrex-diff-perc'],3) }}"style="color:{{ $coin['bittrex-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bittrex-diff-perc'],3) }} % </td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
@@ -142,31 +142,31 @@
 
     <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#eth">Show/Hide ETH </button><br>     
       <div id="eth" class="panel panel-default collapse in">
-        <table class="table table-striped">
+        <table class="table table-striped table-bordered sortable">
           <thead>
             <tr>
               <th> coin </th>
-              <th class="text-right"> Binance </th>   
-              <th class="text-right"> Bitfinex </th>
-              <th class="text-right"> Price Diff % </th>
-              <th class="text-right"> Price Diff </th>
-              <th class="text-right"> Bittrex </th>
-              <th class="text-right"> Price Diff % </th>
-              <th class="text-right"> Price Diff </th>
+              <th class="text-center"> Binance </th>   
+              <th class="text-center"> Bitfinex </th>
+              <th class="text-center"> Price Diff % </th>
+              <th class="text-center"> Price Diff </th>
+              <th class="text-center"> Bittrex </th>
+              <th class="text-center"> Price Diff % </th>
+              <th class="text-center"> Price Diff </th>
             </tr>
           </thead>
           <tbody>
            @foreach($data['ETH'] as $symbol => $coin)
            <tr>
             <td> {{ $symbol }} </td>
-            <td class="text-right"> {{ number_format($coin['binance'],6) }} </td>
+            <td class="text-right" data-value="{{ $coin['binance'] }}"> {{ number_format($coin['binance'],6) }} </td>
             @if(isset($coin['bitfinex']))
-            <td class="text-right"> {{ number_format($coin['bitfinex'],6) }} </td>
+            <td class="text-right" data-value="{{ $coin['bitfinex'] }}"> {{ number_format($coin['bitfinex'],6) }} </td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
             @if(isset($coin['bitfinex-diff-perc']))
-            <td class="text-right" style="color:{{ $coin['bitfinex-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bitfinex-diff-perc'],3) }} % </td>
+            <td class="text-right" data-value="{{ number_format($coin['bitfinex-diff-perc'],3) }}" style="color:{{ $coin['bitfinex-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bitfinex-diff-perc'],3) }} % </td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
@@ -176,12 +176,12 @@
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
             @if(isset($coin['bittrex']))
-            <td class="text-right"> {{ number_format($coin['bittrex'],6) }} </td>
+            <td class="text-right" data-value="{{ $coin['bittrex'] }}"> {{ number_format($coin['bittrex'],6) }} </td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
             @if(isset($coin['bittrex-diff-perc']))
-            <td class="text-right" style="color:{{ $coin['bittrex-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bittrex-diff-perc'],3) }} % </td>
+            <td class="text-right" data-value="{{ number_format($coin['bittrex-diff-perc'],3) }}" style="color:{{ $coin['bittrex-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bittrex-diff-perc'],3) }} % </td>
             @else
             <td class="text-right" style="color: blue;"> ##### </td>
             @endif
@@ -198,9 +198,10 @@
   </div>
 </div>
 
-
-
 </div>
+
+@include('layouts.datatable-layout')
+
 @endsection
 
 {{--  "symbol" => "BTCUSDT"

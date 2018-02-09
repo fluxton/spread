@@ -6,28 +6,28 @@
     <div class="col-md-10">
     <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#usdt">Show/Hide USDT </button><br>     
       <div id="usdt" class="panel panel-default collapse in">
-        <table class="table"  table-striped>
+        <table class="table table-striped table-bordered sortable">
           <thead>
             <tr>
               <th> symbol </th>
-              <th class="text-right"> usd </th>   
-              <th class="text-right"> % 24h </th>
-              <th class="text-right"> price diff (24h) </th>
-              <th class="text-right"> day highest </th>
-              <th class="text-right"> day lowest </th>
-              <th class="text-right"> volume </th>
+              <th class="text-center"> usd </th>   
+              <th class="text-center"> % 24h </th>
+              <th class="text-center"> price diff (24h) </th>
+              <th class="text-center"> day highest </th>
+              <th class="text-center"> day lowest </th>
+              <th class="text-center"> volume </th>
             </tr>
           </thead>
           <tbody>
            @foreach($usdt_coins as $usdt_coin)
            <tr>
             <td> {{ $usdt_coin['MarketName'] }} </td>
-            <td class="text-right"> {{ number_format($usdt_coin['Last'],2) }} $</td>
-            <td class="text-right" style="color:{{ $usdt_coin['ChangePercent24h'] < 0 ? " red" : " green"  }} ;"> {{ number_format($usdt_coin['ChangePercent24h'],3) }} % </td>
-            <td class="text-right" style="color:{{ $usdt_coin['Change24h'] < 0 ? " red" : " green"  }} ;"> {{ number_format($usdt_coin['Change24h'] ,2)}} $</td>
-            <td class="text-right"> {{ number_format($usdt_coin['High'],2) }} </td>
-            <td class="text-right"> {{ number_format($usdt_coin['Low'],2) }} </td>
-            <td class="text-right"> {{ number_format($usdt_coin['BaseVolume'],2) }} </td>
+            <td class="text-right" data-value="{{ $usdt_coin['Last'] }}"> {{ number_format($usdt_coin['Last'],2) }} $</td>
+            <td class="text-right" data-value="{{ $usdt_coin['ChangePercent24h'] }}" style="color:{{ $usdt_coin['ChangePercent24h'] < 0 ? " red" : " green"  }} ;"> {{ number_format($usdt_coin['ChangePercent24h'],3) }} % </td>
+            <td class="text-right" data-value="{{ $usdt_coin['Change24h'] }}" style="color:{{ $usdt_coin['Change24h'] < 0 ? " red" : " green"  }} ;"> {{ number_format($usdt_coin['Change24h'] ,2)}} $</td>
+            <td class="text-right" data-value="{{ $usdt_coin['High'] }}"> {{ number_format($usdt_coin['High'],2) }} $</td>
+            <td class="text-right" data-value="{{ $usdt_coin['Low'] }}"> {{ number_format($usdt_coin['Low'],2) }} $</td>
+            <td class="text-right" data-value="{{ $usdt_coin['BaseVolume'] }}"> {{ number_format($usdt_coin['BaseVolume'],2) }} </td>
           </tr>
           @endforeach
         </tbody>
@@ -38,16 +38,16 @@
 
     <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#btc">Show/Hide BTC </button><br>     
       <div id="btc" class="panel panel-default collapse in">
-        <table class="table"  table-striped>
+        <table class="table table-striped table-bordered sortable">
           <thead>
             <tr>
               <th> symbol </th>
-              <th class="text-right"> Bitcoin </th>   
-              <th class="text-right"> % 24h </th>
-              <th class="text-right"> price diff (24h) </th>
-              <th class="text-right"> day highest </th>
-              <th class="text-right"> day lowest </th>
-              <th class="text-right"> volume </th>
+              <th class="text-center"> Bitcoin </th>   
+              <th class="text-center"> % 24h </th>
+              <th class="text-center"> price diff (24h) </th>
+              <th class="text-center"> day highest </th>
+              <th class="text-center"> day lowest </th>
+              <th class="text-center"> volume </th>
             </tr>
           </thead>
           <tbody>
@@ -55,11 +55,11 @@
            <tr>
             <td> {{ $btc_coin['MarketName'] }} </td>
             <td class="text-right"> {{ number_format($btc_coin['Last'],8) }} </td>
-            <td class="text-right" style="color:{{ $btc_coin['ChangePercent24h'] < 0 ? " red" : " green"  }} ;"> {{ number_format($btc_coin['ChangePercent24h'],3) }} % </td>
+            <td class="text-right" data-value="{{ $btc_coin['ChangePercent24h'] }}" style="color:{{ $btc_coin['ChangePercent24h'] < 0 ? " red" : " green"  }} ;"> {{ number_format($btc_coin['ChangePercent24h'],3) }} % </td>
             <td class="text-right" style="color:{{ $btc_coin['Change24h'] < 0 ? " red" : " green"  }} ;"> {{ number_format($btc_coin['Change24h'] ,8) }} </td>
             <td class="text-right"> {{ number_format($btc_coin['High'],8) }} </td>
             <td class="text-right"> {{ number_format($btc_coin['Low'],8) }} </td>
-            <td class="text-right"> {{ $btc_coin['BaseVolume'] }} </td>
+            <td class="text-right" data-value="{{ $btc_coin['BaseVolume'] }}"> {{ number_format($btc_coin['BaseVolume'],2) }} </td>
           </tr>
           @endforeach
         </tbody>
@@ -70,16 +70,16 @@
 
     <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#eth">Show/Hide ETH </button><br>     
       <div id="eth" class="panel panel-default collapse in">
-        <table class="table"  table-striped>
+        <table class="table table-striped table-bordered sortable">
           <thead>
             <tr>
               <th> symbol </th>
-              <th class="text-right"> Ethereum </th>   
-              <th class="text-right"> % 24h </th>
-              <th class="text-right"> price diff (24h) </th>
-              <th class="text-right"> day highest </th>
-              <th class="text-right"> day lowest </th>
-              <th class="text-right"> volume </th>
+              <th class="text-center"> Ethereum </th>   
+              <th class="text-center"> % 24h </th>
+              <th class="text-center"> price diff (24h) </th>
+              <th class="text-center"> day highest </th>
+              <th class="text-center"> day lowest </th>
+              <th class="text-center"> volume </th>
             </tr>
           </thead>
           <tbody>
@@ -87,11 +87,11 @@
            <tr>
             <td> {{ $eth_coin['MarketName'] }} </td>
             <td class="text-right"> {{ number_format($eth_coin['Last'],8) }} </td>
-            <td class="text-right" style="color:{{ $eth_coin['ChangePercent24h'] < 0 ? " red" : " green"  }} ;"> {{ number_format($eth_coin['ChangePercent24h'],3) }} % </td>
+            <td class="text-right" data-value="{{ $eth_coin['ChangePercent24h'] }}" style="color:{{ $eth_coin['ChangePercent24h'] < 0 ? " red" : " green"  }} ;"> {{ number_format($eth_coin['ChangePercent24h'],3) }} % </td>
             <td class="text-right" style="color:{{ $eth_coin['Change24h'] < 0 ? " red" : " green"  }} ;"> {{ number_format($eth_coin['Change24h'] ,8) }} </td>
             <td class="text-right"> {{ number_format($eth_coin['High'],8) }} </td>
             <td class="text-right"> {{ number_format($eth_coin['Low'],8) }} </td>
-            <td class="text-right"> {{ $eth_coin['BaseVolume'] }} </td>
+            <td class="text-right" data-value="{{ $eth_coin['BaseVolume'] }}"> {{ number_format($eth_coin['BaseVolume'],2) }} </td>
           </tr>
           @endforeach
         </tbody>
@@ -105,6 +105,7 @@
 
 
 </div>
+@include('layouts.datatable-layout')
 @endsection
 
 {{-- //    {
