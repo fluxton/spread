@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+//use Illuminate\Http\Request;
 use GuzzleHttp\Client;
-use GuzzleHttp\Response;
+//use GuzzleHttp\Response;
 
 class BithumbController extends Controller
 {
@@ -24,7 +25,7 @@ class BithumbController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function getData()
 	{
 		// Create a client with a base URI
 		$client = new Client(['base_uri' => 'https://api.bithumb.com/public/ticker/']);  //https://api.bithumb.com/public/ticker/all
@@ -53,15 +54,13 @@ class BithumbController extends Controller
 
 		$getKrwToUsdRate = $content->rates->USD;
 
-		    // dd($getKrwToUsdRate);
-
-		    
-
-		
-		return view('bithumb.index',[
-          'coins' => $coins,
-          'exchange_rate' => $getKrwToUsdRate
-      ]);
+		return json_encode([
+			'data' => [
+				'coins' => $coins,
+				'exchange_rate' => $getKrwToUsdRate
+			],
+			'message' => 'ok'
+		]);
 	}
 }
 

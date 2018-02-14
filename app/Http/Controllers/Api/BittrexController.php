@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
-use GuzzleHttp\Response;
 
 class BittrexController extends Controller
 {
@@ -26,7 +25,7 @@ class BittrexController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function getData()
 	{
 		// Send a request to https://bittrex.com/api/v1.1/public/getmarketsummaries
 		$response = $this->api_client->request('GET', 'getmarketsummaries');
@@ -118,18 +117,14 @@ class BittrexController extends Controller
 
 		//dd($btc_coins);
 
-		return view('bittrex.index',[
-			'usdt_coins' => $usdt_coins,
-			'btc_coins' => $btc_coins,
-			'eth_coins' => $eth_coins,
+		return json_encode([
+			'data' => [
+				'usdt_coins' => $usdt_coins,
+				'btc_coins' => $btc_coins,
+				'eth_coins' => $eth_coins,
+			],
+			'message' => 'ok'
 		]);
-	}
-
-	public function apiProxy() {
-		// Send a request to https://bittrex.com/api/v1.1/public/getmarketsummaries
-		$response = $this->api_client->request('GET', 'getmarketsummaries');
-
-		return $response->getBody(true)->getContents();	
 	}
 }
 

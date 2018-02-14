@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
-use GuzzleHttp\Response;
 
 class BinanceController extends Controller
 {
@@ -23,7 +22,7 @@ class BinanceController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function getData()
 	{
 		// Create a client with a base URI
 		$client = new Client(['base_uri' => 'https://api.binance.com/api/v1/ticker/']);  //https://api.binance.com/api/v1/ticker/24hr
@@ -103,22 +102,16 @@ class BinanceController extends Controller
 
 		//dd($coins);
 
-		return view('binance.index',[
-			'usdt_coins' => $usdt_coins,
-			'btc_coins' => $btc_coins,
-			'eth_coins' => $eth_coins,
+		return json_encode([
+			'data' => [
+				'usdt_coins' => $usdt_coins,
+				'btc_coins' => $btc_coins,
+				'eth_coins' => $eth_coins,
+			],
+			'message' => 'ok'
 		]);
 	}
-
-	public function apiProxy()
-	{
-		// Create a client with a base URI
-		$client = new Client(['base_uri' => 'https://api.binance.com/api/v1/ticker/']);  //https://api.binance.com/api/v1/ticker/24hr
-		// Send a request to https://api.coinmarketcap.com/v1/ticker/bitcoin
-		$response = $client->request('GET', '24hr');
-
-		return $response->getBody(true)->getContents();		
-	}
+	
 }
 
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 use GuzzleHttp\Client;
-use GuzzleHttp\Response;
 
 class SpreadController extends Controller
 {
@@ -51,20 +51,12 @@ class SpreadController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function bithumb()
+	public function bithumbData()
 	{
 
 		$coin_prices = [];
 
-		$time_client = new Client(['base_uri' => 'https://api.fixer.io/latest']);  //https://api.fixer.io/latest?base=KRW&symbols=USD
-
-		$time_response = $time_client->request('GET', '?base=KRW&symbols=USD');
-
-		$content = json_decode($time_response->getBody(true)->getContents());
-
-		$getKrwToUsdRate = $content->rates->USD;
-
-		$coin_prices['bithumb'] = $this->getBithumbInfo($getKrwToUsdRate,$this->symbols);
+		$coin_prices['bithumb'] = $this->getBithumbInfo($this->symbols);
 		$coin_prices['bittrex'] = $this->getBittrexInfo($this->symbols)['USDT'];
 		$coin_prices['binance'] = $this->getBinanceInfo($this->symbols)['USDT'];
 		//$coin_prices['bitfinex'] = $this->getBitfinexInfo($this->$symbols);
@@ -96,17 +88,22 @@ class SpreadController extends Controller
 
 		}
 
-		$available_withdrawal = ['BTC','ETH','DASH','LTC','ETC','XRP','BCH','XMR','ZEC','QTUM'];
+		// $available_withdrawal = ['BTC','ETH','DASH','LTC','ETC','XRP','BCH','XMR','ZEC','QTUM'];
 
 		//dd($full_spread);
 
-		
+		$time_client = new Client(['base_uri' => 'https://api.fixer.io/latest']);  //https://api.fixer.io/latest?base=KRW&symbols=USD
 
-		return view('spread.bithumb',[
-			'full_spread' => $full_spread,
-			'available_withdrawal' => $available_withdrawal,
-			'exchange_rate' => $getKrwToUsdRate
-		]);
+		$time_response = $time_client->request('GET', '?base=KRW&symbols=USD');
+
+		$content = json_decode($time_response->getBody(true)->getContents());
+
+		$getKrwToUsdRate = $content->rates->USD;
+
+		return json_encode([
+				'full_spread' => $full_spread,
+				'exchange_rate' => $getKrwToUsdRate
+			]);
 	}
 
 	public function binance()
@@ -171,8 +168,11 @@ class SpreadController extends Controller
 
 		//dd($full_spread);//
 
-		return view('spread.binance',[
-			'data' => $full_spread
+		return json_encode([
+			'data' => [
+				'full_spread' => $full_spread
+			],
+			'message' => 'ok'
 		]);
 	}
 
@@ -231,8 +231,11 @@ class SpreadController extends Controller
 
 		//dd($full_spread);//
 
-		return view('spread.bittrex',[
-			'data' => $full_spread
+		return json_encode([
+			'data' => [
+				'full_spread' => $full_spread
+			],
+			'message' => 'ok'
 		]);
 	}
 
@@ -437,7 +440,7 @@ class SpreadController extends Controller
 		return $coins;
 	}
 
-	protected function getBithumbInfo($rate, $symbols){ 
+	protected function getBithumbInfo($symbols){ 
 
 		$client = new Client(['base_uri' => 'https://api.bithumb.com/public/ticker/']);  //https://api.bithumb.com/public/ticker/all
 		// Send a request to https://api.bithumb.com/public/ticker
@@ -467,7 +470,7 @@ class SpreadController extends Controller
 
 		foreach ($coins as $key => $coin) {
 			if(is_array($coin)) {
-				$usdt_prices[$key] = $coin["sell_price"] * $rate;
+				$usdt_prices[$key] = $coin["sell_price"] * 0.000915;
 			}			
 			
 		}

@@ -3,6 +3,14 @@
 @section('content')
 <div class="container">
   <div class="row">
+      <div class="col-md-8 text-center">
+        <p class="text-center">Price Updated at: <span id="start_time"></span> , current time : <span id="time"></span></p>   
+        <p class="text-center">Korean Won to US Dollar Exchange rate: <strong id="krw_to_usd">{{ $exchange_rate }}</strong></p>
+        <button id="update_button" type="button" class="btn btn-primary">Update Data</button>
+      </div>
+    </div>
+    <br>
+  <div class="row">
     <div class="col-md-10">
       <div id="usdt" class="panel panel-default">
         <table class="table table-striped table-bordered sortable">
@@ -12,60 +20,50 @@
               <th class="text-center"> Bithumb </th>   
               <th class="text-center"> Binance </th>
               <th class="text-center"> Binance Diff % </th>
-              <th class="text-center"> Binance Diff </th>
               <th class="text-center"> Bittrex </th>
               <th class="text-center"> Bittrex Diff % </th>
-              <th class="text-center"> Bittrex Diff </th>
             </tr>
           </thead>
           <tbody>
-           @foreach($data as $symbol => $coin)
+           @foreach($full_spread as $symbol => $coin)
            <tr class="
-           @if(isset($coin['binance-diff-perc']))
+           {{-- @if(isset($coin['binance-diff-perc']))
            {{ $coin['binance-diff-perc'] > 10 ? "info" : ""  }}
            {{ $coin['binance-diff-perc'] < -10 ? "success" : ""  }}
            @endif
            @if(isset($coin['bittrex-diff-perc']))
            {{ $coin['bittrex-diff-perc'] > 10 ? "info" : ""  }}           
            {{ $coin['bittrex-diff-perc'] < -10 ? "success" : ""  }}
-           {@endif
+           {@endif --}}
            ">
            <td> {{ $symbol }}
             @if(!in_array($symbol, $available_withdrawal))
             <span style="color: red;"> *</span>
             @endif
           </td>
-          <td class="text-right" data-value="{{ $coin['bithumb'] }}"> {{ number_format($coin['bithumb'],2) }} $</td>
+          <td id="{{ $symbol }}_bithumb" class="text-right" data-value="{{ $coin['bithumb'] }}"> {{ number_format($coin['bithumb'],2) }} $</td>
           @if(isset($coin['binance']))
-          <td class="text-right" data-value="{{ $coin['binance'] }}"> {{ number_format($coin['binance'],2) }} $</td>
+          <td id="{{ $symbol }}_binance" class="text-right" data-value="{{ $coin['binance'] }}"> {{ number_format($coin['binance'],2) }} $</td>
           @else
-          <td class="text-right" data-value="0" style="color: blue;"> ##### </td>
+          <td id="{{ $symbol }}_binance" class="text-right" data-value="0" style="color: blue;"> ##### </td>
           @endif
-          @if(isset($coin['binance-diff-perc']))
-          <td class="text-right" data-value="{{ $coin['binance-diff-perc'] }}" style="color:{{ $coin['binance-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['binance-diff-perc'],3) }} % </td>
+          @if(isset($coin['binance_diff_perc']))
+          <td id="{{ $symbol }}_binance_diff_perc" class="text-right" data-value="{{ $coin['binance_diff_perc'] }}" style="color:{{ $coin['binance_diff_perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['binance_diff_perc'],3) }} % </td>
           @else
-          <td class="text-right" data-value="0" style="color: blue;"> ##### </td>
+          <td id="{{ $symbol }}_binance_diff_perc" class="text-right" data-value="0" style="color: blue;"> ##### </td>
           @endif
-          @if(isset($coin['binance-diff']))
-          <td class="text-right" data-value="{{ $coin['binance-diff'] }}" style="color:{{ $coin['binance-diff'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['binance-diff'] ,2)}} $</td>
-          @else
-          <td class="text-right" data-value="0" style="color: blue;"> ##### </td>
-          @endif
+          
           @if(isset($coin['bittrex']))
-          <td class="text-right" data-value="{{ $coin['bittrex'] }}"> {{ number_format($coin['bittrex'],2) }} $</td>
+          <td id="{{ $symbol }}_bittrex" class="text-right" data-value="{{ $coin['bittrex'] }}"> {{ number_format($coin['bittrex'],2) }} $</td>
           @else
-          <td class="text-right" data-value="0" style="color: blue;"> ##### </td>
+          <td id="{{ $symbol }}_bittrex" class="text-right" data-value="0" style="color: blue;"> ##### </td>
           @endif
-          @if(isset($coin['bittrex-diff-perc']))
-          <td class="text-right" data-value="{{ $coin['bittrex-diff-perc'] }}" style="color:{{ $coin['bittrex-diff-perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bittrex-diff-perc'],3) }} % </td>
+          @if(isset($coin['bittrex_diff_perc']))
+          <td id="{{ $symbol }}_bittrex_diff_perc" class="text-right" data-value="{{ $coin['bittrex_diff_perc'] }}" style="color:{{ $coin['bittrex_diff_perc'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bittrex_diff_perc'],3) }} % </td>
           @else
-          <td class="text-right" data-value="0" style="color: blue;"> ##### </td>
+          <td id="{{ $symbol }}_bittrex_diff_perc" class="text-right" data-value="0" style="color: blue;"> ##### </td>
           @endif
-          @if(isset($coin['bittrex-diff']))
-          <td class="text-right" data-value="{{ $coin['bittrex-diff'] }}" style="color:{{ $coin['bittrex-diff'] < 0 ? " red" : " green"  }} ;"> {{ number_format($coin['bittrex-diff'] ,2)}} $</td>
-          @else
-          <td class="text-right" data-value="0" style="color: blue;"> ##### </td>
-          @endif
+          
         </tr>
         @endforeach
       </tbody>
@@ -82,4 +80,7 @@
 </div>
 
 @include('layouts.datatable-layout')
+  <script type="text/javascript" src="{{  asset('/js/spread-bithumb.js') }}"></script>
+{{-- <script src="/js/spread-bithumb.js"></script> --}}
+{{-- @include('scripts.bithumb') --}}
 @endsection

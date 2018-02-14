@@ -3,6 +3,13 @@
 @section('content')
 <div class="container">
   <div class="row">
+      <div class="col-md-8 text-center">
+        <p class="text-center">Price Updated at: <span id="start_time"></span> , current time : <span id="time"></span></p>   
+        <button id="update_button" type="button" class="btn btn-primary">Update Data</button>
+      </div>
+    </div>
+    <br>
+  <div class="row">
     <div class="col-md-10">      
       <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#usdt">Show/Hide USDT </button><br>     
       <div id="usdt" class="panel panel-default collapse in">
@@ -110,6 +117,8 @@
 
 
 @include('layouts.datatable-layout')
+  {{-- @include('scripts.binance') --}}
+  <script type="text/javascript" src="{{  asset('/asset/js/binance.js') }}"></script>
 
 
 @endsection

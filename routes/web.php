@@ -40,3 +40,10 @@ Route::get('/spread/binance', 'SpreadController@binance')->name('spread-binance'
 
 
 
+
+
+
+
+
+
+

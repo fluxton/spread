@@ -139,6 +139,7 @@ class BitfinexController extends Controller
 			'eth_coins' => $eth_coins,
 		]);
 	}
+
 }
 
 
