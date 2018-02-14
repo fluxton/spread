@@ -85,7 +85,7 @@ var updateTable = function(){
 $(document).ready(function(){
   //updateTable();
 
-  //updateTime();
+  updateTimer();
   $("#update_button").click(updateTable);
 });
 
