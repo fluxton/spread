@@ -25,6 +25,8 @@ Route::get('/bitfinex/data', 'Api\BitfinexController@getData');
 
 Route::get('/bittrex/data', 'Api\BittrexController@getData');
 
+Route::get('/coinmarketcap/data', 'Api\CoinmarketcapController@getData');
+
 
 
 
@@ -38,4 +40,4 @@ Route::get('/bittrex/prices', 'Api\SpreadController@bittrex');
 
 
 
-Route::get('/coinmarketcap', 'Api\CoinmarketcapController@getData');
+

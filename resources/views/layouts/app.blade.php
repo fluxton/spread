@@ -39,13 +39,32 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         <li><a href="{{ route('coinmarketcap') }}">Coinmarketcap</a></li>
-                        <li><a href="{{ route('binance') }}">Binance</a></li>
-                        <li><a href="{{ route('bitfinex') }}">Bitfinex</a></li>
-                        <li><a href="{{ route('bittrex') }}">Bittrex</a></li>
-                        <li><a href="{{ route('bithumb') }}">Bithumb</a></li>
-                        <li><a href="{{ route('spread-bithumb') }}">Spread-Bithumb</a></li>
-                        <li><a href="{{ route('spread-binance') }}">Spread-Binance</a></li>
-                        <li><a href="{{ route('spread-bittrex') }}">Spread-Bittrex</a></li>
+                        <li class="nav-item dropdown">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Single Exchanges<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ route('binance') }}">Binance</a></li>
+                                <li><a href="{{ route('bitfinex') }}">Bitfinex</a></li>
+                                <li><a href="{{ route('bittrex') }}">Bittrex</a></li>
+                                <li><a href="{{ route('bithumb') }}">Bithumb</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Spreads<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ route('spread-bithumb') }}">Spread-Bithumb</a></li>
+                                <li><a href="{{ route('spread-binance') }}">Spread-Binance</a></li>
+                                <li><a href="{{ route('spread-bittrex') }}">Spread-Bittrex</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Upload Csv data<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ route('csv-index') }}">Single Coin Data</a></li>
+                                <li><a href="{{ route('csv-show') }}">Overall data analysis</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{{ route('post-index') }}">Idea & Suggestions</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

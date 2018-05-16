@@ -387,9 +387,9 @@ class SpreadController extends Controller
 
 		$client = new Client(['base_uri' => 'https://api.bitfinex.com/v2/tickers']);
 		
-		$response = $client->request('GET', $query_string);
+		$response2 = $client->request('GET', $query_string);
 
-		$contents = json_decode($response->getBody(true)->getContents(),true);
+		$contents = json_decode($response2->getBody(true)->getContents(),true);
 
 		// if(!empty($symbols)){
 		// 	$coins = array_filter($contents, function ($var) use ($symbols) {
@@ -404,9 +404,7 @@ class SpreadController extends Controller
 
 		usort($contents, function($a, $b) {
 			return $b[8] - $a[8];
-		});
-
-		
+		});		
 
 		$usdt_coins = [];
 		$btc_coins = [];
@@ -414,7 +412,7 @@ class SpreadController extends Controller
 
 		foreach ($contents as $coin) {
 			$string = $coin[0];
-			$strlen = strlen($string);
+			//$strlen = strlen($string);
 			if(substr_compare($string, 'USD' , 4, 3) === 0){
 				$usdt_coins[substr($string,  1 , 3)] = $coin[7];
 			}

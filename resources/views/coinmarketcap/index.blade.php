@@ -3,6 +3,16 @@
 @section('content')
 <div class="container">
     <div class="row">
+        <div class="col-md-8 text-center">
+            <p class="text-center"><button id="update_button" type="button" class="btn btn-primary">Update Data</button>  Last Updated at: <span id="start_time"></span></p>   
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="auto_update">
+                <label class="form-check-label" for="auto_update">Auto update the table with fresh data every 1 minute</label>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
         <div class="col-md-10">
             <div class="panel panel-default">
                 <div class="panel-heading">Coin Market Cap Info</div>                
@@ -22,31 +32,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                       @foreach($coins as $coin)
-                       <tr>
-                          <td data-value="{{ $coin['rank'] }}"> {{ $coin['rank'] }} </td>
-                              <td> {{ $coin['name'] }} </td>
-                              <td class="text-right" data-value="{{ $coin['price_usd'] }}"> {{ $coin['price_usd'] }} $</td>
-                              <td class="text-right" data-value="{{ $coin['price_btc'] }}"> {{ $coin['price_btc'] }} </td>
-                              <td class="text-right" data-value="{{ $coin['market_cap_usd'] }}"> {{ intval($coin['market_cap_usd']) }} $</td>
-                              <td class="text-right" data-value="{{ $coin['24h_volume_usd'] }}"> {{ intval($coin['24h_volume_usd']) }} $</td>
-                              <td class="text-right"  data-value="{{ $coin['percent_change_1h'] }}"style="color:{{ $coin['percent_change_1h'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_1h'] }} </td>
-                              <td class="text-right"  data-value="{{ $coin['percent_change_24h'] }}"style="color:{{ $coin['percent_change_24h'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_24h'] }} </td>
-                              <td class="text-right"  data-value="{{ $coin['percent_change_7d'] }}"style="color:{{ $coin['percent_change_7d'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_7d'] }} </td>
-                          </tr>
-                          @endforeach
-                      </tbody>
-                  </table>
+                        @foreach($coins as $coin)
+                        <tr>
+                            <td id="{{ $coin['symbol'] }}_rank" data-value="{{ $coin['rank'] }}"> {{ $coin['rank'] }} </td>
+                            <td id="{{ $coin['symbol'] }}_name" data-value="{{ $coin['name'] }}"> {{ $coin['name'] }} </td>
+                            <td id="{{ $coin['symbol'] }}_price_usd" class="text-right" data-value="{{ $coin['price_usd'] }}"> {{ number_format($coin['price_usd'],2, '.', ',') }} ${{ $coin['price_usd'] }} $</td>
+                            <td id="{{ $coin['symbol'] }}_price_btc" class="text-right" data-value="{{ $coin['price_btc'] }}"> {{ $coin['price_btc'] }} </td>
+                            <td id="{{ $coin['symbol'] }}_market_cap_usd" class="text-right" data-value="{{ $coin['market_cap_usd'] }}"> {{ intval($coin['market_cap_usd']) }} $</td>
+                            <td id="{{ $coin['symbol'] }}_24h_volume_usd" class="text-right" data-value="{{ $coin['24h_volume_usd'] }}"> {{ intval($coin['24h_volume_usd']) }} $</td>
+                            <td id="{{ $coin['symbol'] }}_percent_change_1h" class="text-right"  data-value="{{ $coin['percent_change_1h'] }}"style="color:{{ $coin['percent_change_1h'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_1h'] }} </td>
+                            <td id="{{ $coin['symbol'] }}_percent_change_24h" class="text-right"  data-value="{{ $coin['percent_change_24h'] }}"style="color:{{ $coin['percent_change_24h'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_24h'] }} </td>
+                            <td id="{{ $coin['symbol'] }}_percent_change_7d" class="text-right"  data-value="{{ $coin['percent_change_7d'] }}"style="color:{{ $coin['percent_change_7d'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_7d'] }} </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
-              </div>
-          </div>
-      </div>
+            </div>
+        </div>
+    </div>
 
 
 
-  </div>
-  @include('layouts.datatable-layout')
-  @endsection
+</div>
+@include('layouts.datatable-layout')
+<script type="text/javascript" src="{{  asset('/js/coinmarketcap.js') }}"></script>
+@endsection
 
 
 {{-- {

@@ -1,10 +1,14 @@
 
-  var updateTimer = function () {
+//base_api_url = myVar = '{{ env('APP_DEBUG') }}';
+
+
+
+  var updateLastUpdateTime = function () {
     function checkTime(i) {
       return (i < 10) ? "0" + i : i;
     }
 
-    function startTime() {
+    function getTime() {
       var today = new Date(),
       h = checkTime(today.getHours()),
       m = checkTime(today.getMinutes()),
@@ -13,20 +17,7 @@
       $("#start_time" ).html(h + ":" + m + ":" + s);
         // document.getElementById('start_time').innerHTML = h + ":" + m + ":" + s;        
     }
-
-    function updateTime() {
-      var today = new Date(),
-      h = checkTime(today.getHours()),
-      m = checkTime(today.getMinutes()),
-      s = checkTime(today.getSeconds());
-      $("#time" ).html(h + ":" + m + ":" + s);
-      // document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
-      t = setTimeout(function () {
-        updateTime()
-      }, 500);
-    }
-    startTime();
-    updateTime();
+    getTime();
   }
 
   var updateRate = function(rate) {
@@ -90,8 +81,9 @@ var getNewData = function () {
               }
             
           });
+          console.log('updated completed');
 
-          updateTimer();
+          updateLastUpdateTime();
         }
      // error: failureFunction 
     });
@@ -99,14 +91,41 @@ var getNewData = function () {
 
 
 
-$(document).ready(function(){
-  //getData();
-  console.log('document ready');
+$(document).ready(function(){  
+    console.log('document ready');
 
-  updateTimer();
-  $("#update_button").click(getNewData);
+    updateLastUpdateTime();    
 
-  t = setTimeout(function () {
-        getNewData()
-      }, 1000*60);  //1 minute
+    var timer_var;
+
+    var startTimer = function () {
+      console.log('start timer');
+      timer_var = setInterval(function() {        
+        getNewData();
+      }, 60 * 1000);
+    }
+
+    var stopTimer = function () {
+      console.log('stop timer');
+        clearInterval(timer_var);
+    }
+
+    $("#update_button").click(getNewData);
+
+    $('#auto_update').change(function () {        
+        console.log($('#auto_update').is(":checked"));
+        if($('#auto_update').is(":checked")){
+          startTimer();
+        }
+        else{
+          stopTimer();
+        }        
+     });
+
+    $(".nav a").on("click", function(){
+       $(".nav").find(".active").removeClass("active");
+       $(this).parent().addClass("active");
+    });
+
+  
 });

@@ -4,9 +4,12 @@
 <div class="container">
   <div class="row">
       <div class="col-md-8 text-center">
-        <p class="text-center">Price Updated at: <span id="start_time"></span> , current time : <span id="time"></span></p>   
         <p class="text-center">Korean Won to US Dollar Exchange rate: <strong id="krw_to_usd">{{ $exchange_rate }}</strong></p>
-        <button id="update_button" type="button" class="btn btn-primary">Update Data</button>
+        <p class="text-center"><button id="update_button" type="button" class="btn btn-primary">Update Data</button>  Last Updated at: <span id="start_time"></span></p>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="auto_update">
+          <label class="form-check-label" for="auto_update">Auto update the table with fresh data every 1 minute</label>
+        </div>
       </div>
     </div>
     <br>
@@ -41,9 +44,9 @@
             <span style="color: red;"> *</span>
             @endif
           </td>
-          <td id="{{ $symbol }}_bithumb" class="text-right" data-value="{{ $coin['bithumb'] }}"> {{ number_format($coin['bithumb'],2) }} $</td>
+          <td id="{{ $symbol }}_bithumb" class="text-right" data-value="{{ $coin['bithumb'] }}"> {{ number_format($coin['bithumb'],2, '.', ',') }} $</td>
           @if(isset($coin['binance']))
-          <td id="{{ $symbol }}_binance" class="text-right" data-value="{{ $coin['binance'] }}"> {{ number_format($coin['binance'],2) }} $</td>
+          <td id="{{ $symbol }}_binance" class="text-right" data-value="{{ $coin['binance'] }}"> {{ number_format($coin['binance'],2, '.', ',') }} $</td>
           @else
           <td id="{{ $symbol }}_binance" class="text-right" data-value="0" style="color: blue;"> ##### </td>
           @endif
@@ -54,7 +57,7 @@
           @endif
           
           @if(isset($coin['bittrex']))
-          <td id="{{ $symbol }}_bittrex" class="text-right" data-value="{{ $coin['bittrex'] }}"> {{ number_format($coin['bittrex'],2) }} $</td>
+          <td id="{{ $symbol }}_bittrex" class="text-right" data-value="{{ $coin['bittrex'] }}"> {{ number_format($coin['bittrex'],2, '.', ',') }} $</td>
           @else
           <td id="{{ $symbol }}_bittrex" class="text-right" data-value="0" style="color: blue;"> ##### </td>
           @endif

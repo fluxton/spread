@@ -50,9 +50,9 @@ class BithumbController extends Controller
 
 		$time_response = $time_client->request('GET', '?base=KRW&symbols=USD');
 
-		$content = json_decode($time_response->getBody(true)->getContents());
+		$content1 = json_decode($time_response->getBody(true)->getContents());
 
-		$getKrwToUsdRate = $content->rates->USD;
+		$getKrwToUsdRate = $content1->rates->USD;
 
 		return json_encode([
 			'data' => [

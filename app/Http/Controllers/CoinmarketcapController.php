@@ -36,7 +36,7 @@ class CoinmarketcapController extends Controller
     	// Create a client with a base URI
     	$client = new Client(['base_uri' => 'https://api.coinmarketcap.com/v1/ticker/']);  //https://api.coinmarketcap.com/v1/ticker/?limit=10
 		// Send a request to https://api.coinmarketcap.com/v1/ticker/bitcoin
-    	$response = $client->request('GET', '?limit=30');
+    	$response = $client->request('GET', '?limit=50');
 
 
     	$contents = json_decode($response->getBody(true)->getContents(),true);
