@@ -36,7 +36,7 @@
                         <tr>
                             <td id="{{ $coin['symbol'] }}_rank" data-value="{{ $coin['rank'] }}"> {{ $coin['rank'] }} </td>
                             <td id="{{ $coin['symbol'] }}_name" data-value="{{ $coin['name'] }}"> {{ $coin['name'] }} </td>
-                            <td id="{{ $coin['symbol'] }}_price_usd" class="text-right" data-value="{{ $coin['price_usd'] }}">$ {{ number_format($coin['price_usd'],2, '.', ',') }}  $</td>
+                            <td id="{{ $coin['symbol'] }}_price_usd" class="text-right" data-value="{{ $coin['price_usd'] }}"> {{ number_format($coin['price_usd'],2, '.', ',') }} $</td>
                             <td id="{{ $coin['symbol'] }}_price_btc" class="text-right" data-value="{{ $coin['price_btc'] }}"> {{ $coin['price_btc'] }} </td>
                             <td id="{{ $coin['symbol'] }}_market_cap_usd" class="text-right" data-value="{{ $coin['market_cap_usd'] }}"> {{ intval($coin['market_cap_usd']) }} $</td>
                             <td id="{{ $coin['symbol'] }}_24h_volume_usd" class="text-right" data-value="{{ $coin['24h_volume_usd'] }}"> {{ intval($coin['24h_volume_usd']) }} $</td>
