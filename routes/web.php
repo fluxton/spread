@@ -22,7 +22,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/coinmarketcap', 'CoinmarketcapController@index')->name('coinmarketcap');
 
 
-Route::get('/binance', 'BinanceController@index')->name('binance');
+Route::get('/binance_old', 'BinanceController@index')->name('binance_old');
+
+Route::get('/binance', 'BinanceController@show')->name('binance');
 
 Route::get('/bithumb', 'BithumbController@index')->name('bithumb');
 

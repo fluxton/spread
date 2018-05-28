@@ -40,9 +40,9 @@
                             <td id="{{ $coin['symbol'] }}_price_btc" class="text-right" data-value="{{ $coin['price_btc'] }}"> {{ $coin['price_btc'] }} </td>
                             <td id="{{ $coin['symbol'] }}_market_cap_usd" class="text-right" data-value="{{ $coin['market_cap_usd'] }}"> {{ number_format($coin['market_cap_usd']) }} $</td>
                             <td id="{{ $coin['symbol'] }}_24h_volume_usd" class="text-right" data-value="{{ $coin['24h_volume_usd'] }}"> {{ number_format($coin['24h_volume_usd']) }} $</td>
-                            <td id="{{ $coin['symbol'] }}_percent_change_1h" class="text-right"  data-value="{{ $coin['percent_change_1h'] }}"style="color:{{ $coin['percent_change_1h'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_1h'] }}% </td>
-                            <td id="{{ $coin['symbol'] }}_percent_change_24h" class="text-right"  data-value="{{ $coin['percent_change_24h'] }}"style="color:{{ $coin['percent_change_24h'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_24h'] }}% </td>
-                            <td id="{{ $coin['symbol'] }}_percent_change_7d" class="text-right"  data-value="{{ $coin['percent_change_7d'] }}"style="color:{{ $coin['percent_change_7d'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_7d'] }}% </td>
+                            <td id="{{ $coin['symbol'] }}_percent_change_1h" class="text-right"  data-value="{{ $coin['percent_change_1h'] }}" style="color:{{ $coin['percent_change_1h'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_1h'] }}% </td>
+                            <td id="{{ $coin['symbol'] }}_percent_change_24h" class="text-right"  data-value="{{ $coin['percent_change_24h'] }}" style="color:{{ $coin['percent_change_24h'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_24h'] }}% </td>
+                            <td id="{{ $coin['symbol'] }}_percent_change_7d" class="text-right"  data-value="{{ $coin['percent_change_7d'] }}" style="color:{{ $coin['percent_change_7d'] < 0 ? " red" : " green"  }} ;"> {{ $coin['percent_change_7d'] }}% </td>
                         </tr>
                         @endforeach
                     </tbody>

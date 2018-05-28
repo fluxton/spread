@@ -67,7 +67,7 @@
             <td class="text-right" data-value="{{ $btc_coin['priceChange'] }}" style="color:{{ $btc_coin['priceChange'] < 0 ? " red" : " green"  }} ;"> {{ $btc_coin['priceChange'] }} </td>
             <td class="text-right" data-value="{{ $btc_coin['highPrice'] }}"> {{ $btc_coin['highPrice'] }} </td>
             <td class="text-right" data-value="{{ $btc_coin['lowPrice'] }}"> {{ $btc_coin['lowPrice'] }} </td>
-            <td class="text-right"> {{ number_format($usdt_coin['quoteVolume'],2) }} </td>
+            <td class="text-right"> {{ number_format($btc_coin['quoteVolume'],2) }} </td>
           </tr>
           @endforeach
         </tbody>

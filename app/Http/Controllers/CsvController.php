@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Binance;
+use App\Models\CsvModel;
 
 
 class CsvController extends Controller {
@@ -17,7 +17,7 @@ class CsvController extends Controller {
      * @return void
      */
     public function __construct() {
-        $this->binance = new Binance();
+        //
     }
 
     /**
@@ -55,6 +55,8 @@ class CsvController extends Controller {
 
 
         $data_keys = array_shift($data_array);
+        
+        dd($data_keys);
 
         $market_key = array_search("Market", $data_keys);    //1
         $type_key = array_search("Type", $data_keys);  //2
@@ -121,11 +123,13 @@ class CsvController extends Controller {
         
         $data_array = $this->readCSVtoArray($csv_file);
 
-        $data_keys = array_shift($data_array);
+        $data_keys = array_shift($data_array);  //removes the first element that is about the columns name
         
-        $binance_model = new Binance();
+        //dd($data_array);
         
-        list($coins,$total_balance, $total_usdt) = $binance_model->elaborateBinanceAllHistory($data_array);
+        $csv_model = new CsvModel();
+        
+        list($coins,$total_balance, $total_usdt) = $csv_model->elaborateBinanceAllHistory($data_array);
 
         return view('csv.show', [
             'coins' => $coins,
